@@ -16,6 +16,6 @@ Use of Apache Cassandra:
 
 The schema for the results data as below.
 
-id|news_provider|published|results_date|summary|title|topic_word
+    id|news_provider|published|results_date|summary|title|topic_word
 
 The result schema is stored with the raw data for the further processing.
