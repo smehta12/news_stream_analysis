@@ -1,0 +1,25 @@
+# Name the components on this agent
+newsAgent.sources = r1
+newsAgent.sinks = spark
+newsAgent.channels = MemChannel
+
+# Describe/configure the source
+newsAgent.sources.r1.type = exec
+newsAgent.sources.r1.command = python /home/hduser/project/news_stream_flume/travel_news_rss_collector.py
+
+# Describe the sink
+newsAgent.sinks.spark.type = avro
+newsAgent.sinks.spark.channel = memoryChannel
+newsAgent.sinks.spark.hostname = localhost
+newsAgent.sinks.spark.port = 9999
+
+# Use a channel which buffers events in memory
+newsAgent.channels.MemChannel.type = memory
+newsAgent.channels.MemChannel.capacity = 10000
+newsAgent.channels.MemChannel.transactionCapacity = 100
+
+# Bind the source and sink to the channel
+newsAgent.sources.r1.channels = MemChannel
+newsAgent.sinks.spark.channel = MemChannel
+
+

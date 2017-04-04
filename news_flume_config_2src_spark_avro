@@ -1,0 +1,44 @@
+# Name the components on this agent
+newsAgent.sources = r1 Twitter
+newsAgent.sinks = spark
+newsAgent.channels = MemChannel
+
+# Describe/configure the source
+newsAgent.sources.r1.type = exec
+newsAgent.sources.r1.command = python /home/hduser/project/news_stream_flume/travel_news_rss_collector.py
+
+# Twitter source
+newsAgent.sources.Twitter.type = org.apache.flume.source.twitter.TwitterSource
+newsAgent.sources.Twitter.consumerKey = AyGphP0bKq6834iNvhpcXTWso
+newsAgent.sources.Twitter.consumerSecret =  zyrMY8Qh2QbXB5OD8KxSb4cCJKbjuwo7jUcjnQszAybZECyazw
+newsAgent.sources.Twitter.accessToken = 46855224-zNJwAgdg34WRi0GeCGaBHfkhfou1NOrPgGFPFGnAk 
+newsAgent.sources.Twitter.accessTokenSecret = 0wpTa6ZwKn5MpoCmaFsKkGRw0wuuZGI9iwFzeEaYGZRyh
+newsAgent.sources.Twitter.keywords = travel, airport, cruise, tourism, beaches, skiing, leisure, nomad, flight
+  
+# Describe the sink
+#newsAgent.sinks.spark.type = hdfs
+#newsAgent.sinks.spark.hdfs.path =  hdfs://localhost:54310/news_streaming
+#newsAgent.sinks.spark.hdfs.fileType = DataStream
+#newsAgent.sinks.spark.hdfs.writeFormat = Text
+#newsAgent.sinks.spark.hdfs.batchSize = 1000
+#newsAgent.sinks.spark.hdfs.rollSize = 1024
+#newsAgent.sinks.spark.hdfs.rollCount = 1000
+#newsAgent.sinks.spark.hdfs.rollInterval = 30
+#newsAgent.sinks.spark.hdfs.callTimeout = 310000
+
+newsAgent.sinks.spark.type = avro
+newsAgent.sinks.spark.channel = memoryChannel
+newsAgent.sinks.spark.hostname = localhost
+newsAgent.sinks.spark.port = 9999
+newsAgent.sinks.spark.batch-size = 1
+
+# Use a channel which buffers events in memory
+newsAgent.channels.MemChannel.type = memory
+newsAgent.channels.MemChannel.capacity = 10000
+newsAgent.channels.MemChannel.transactionCapacity = 100
+
+# Bind the source and sink to the channel
+newsAgent.sources.r1.channels = MemChannel
+newsAgent.sources.Twitter.channels = MemChannel
+newsAgent.sinks.spark.channel = MemChannel
+
